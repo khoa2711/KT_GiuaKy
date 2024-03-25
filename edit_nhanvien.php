@@ -1,23 +1,46 @@
 <?php
-require_once("./Entities/employee.class.php");
+require_once("./entities/employee.class.php");
 
-if(isset($_GET["id"])) {
-    $id = $_GET["id"];
-    $employee = NhanVien::list_employee()[$id];
+if (isset($_POST["btnsubmit"])) {
+    $MA_NV = $_POST["txtMANV"];
+    $TEN_NV = $_POST["txtName"];
+    $PHAI = $_POST["txtPHAI"];
+    $NOI_SINH = $_POST["txtNOI_SINH"];
+    $MA_PHONG = $_POST["txtMA_PHONG"];
+    $LUONG = $_POST["txtLUONG"];
+
+    $result = NhanVien::update_employee($MA_NV, $TEN_NV, $PHAI, $NOI_SINH, $MA_PHONG, $LUONG);
+
+    if (!$result) {
+        header("Location: ds_nhanvien.php?failure");
+    } else {
+        header("Location: ds_nhanvien.php?inserted");
+    }
 }
+
+if (isset($_GET["inserted"])) {
+    echo "<h2>Thêm nhân viên thành công</h2>";
+}
+
+include_once("header.php");
 ?>
 
-<?php include_once("header.php"); ?>
-
 <form method="post">
-    <h2>Chỉnh sửa thông tin nhân viên</h2>
-
+    <h2>Nhập thông tin nhân viên</h2>
+    <div class="row">
+        <div class="lbLtitle">
+            <label>Mã nhân viên</label>
+        </div>
+        <div class="lbLinput">
+            <input type="text" name="txtMANV" value="<?php echo isset($_POST["txtMANV"]) ? $_POST["txtMANV"] : ""; ?>" />
+        </div>
+    </div>
     <div class="row">
         <div class="lbLtitle">
             <label>Tên nhân viên</label>
         </div>
         <div class="lbLinput">
-            <input type="text" name="txtName" value="<?php echo $employee["TEN_NV"]; ?>" />
+            <input type="text" name="txtName" value="<?php echo isset($_POST["txtName"]) ? $_POST["txtName"] : ""; ?>" />
         </div>
     </div>
 
@@ -26,7 +49,7 @@ if(isset($_GET["id"])) {
             <label>Giới tính</label>
         </div>
         <div class="lbLinput">
-            <input type="text" name="txtPHAI" value="<?php echo $employee["PHAI"]; ?>" />
+            <input type="text" name="txtPHAI" value="<?php echo isset($_POST["txtPHAI"]) ? $_POST["txtPHAI"] : ""; ?>" />
         </div>
     </div>
 
@@ -35,7 +58,7 @@ if(isset($_GET["id"])) {
             <label>Nơi sinh</label>
         </div>
         <div class="lbLinput">
-            <input type="text" name="txtNOI_SINH" value="<?php echo $employee["NOI_SINH"]; ?>" />
+            <input type="text" name="txtNOI_SINH" value="<?php echo isset($_POST["txtNOI_SINH"]) ? $_POST["txtNOI_SINH"] : ""; ?>" />
         </div>
     </div>
 
@@ -44,7 +67,7 @@ if(isset($_GET["id"])) {
             <label>Mã phòng</label>
         </div>
         <div class="lbLinput">
-            <input type="text" name="txtMA_PHONG" value="<?php echo $employee["MA_PHONG"]; ?>" />
+            <input type="text" name="txtMA_PHONG" value="<?php echo isset($_POST["txtMA_PHONG"]) ? $_POST["txtMA_PHONG"] : ""; ?>" />
         </div>
     </div>
     <div class="row">
@@ -52,16 +75,23 @@ if(isset($_GET["id"])) {
             <label>Lương</label>
         </div>
         <div class="lbLinput">
-            <input type="text" name="txtLUONG" value="<?php echo $employee["LUONG"]; ?>" />
+            <input type="text" name="txtLUONG" value="<?php echo isset($_POST["txtLUONG"]) ? $_POST["txtLUONG"] : ""; ?>" />
         </div>
     </div>
 
     <div class="row">
         <div class="submit">
-            <input type="submit" name="btnsubmit" value="Lưu chỉnh sửa">
+            <input type="submit" name="btnsubmit" value="Thêm nhân viên">
         </div>
     </div>
 
 </form>
+<div>
+    <li>
+        <a href="/KT_GiuaKy/ds_nhanvien.php">Danh sách nhân viên</a>
+    </li>
+</div>
 
-<?php include_once("footer.php"); ?>
+<?php
+include_once("footer.php");
+?>
